@@ -1,0 +1,6 @@
+venv/
+.venv/
+ComfyUI*
+.direnv/
+override.txt
+requirements.compiled
