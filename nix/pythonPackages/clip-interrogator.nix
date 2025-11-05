@@ -4,15 +4,13 @@
   ...
 }:
 python.pkgs.buildPythonPackage rec {
-  pname = "comfyui_frontend_package";
-  version = "1.30.1";
+  pname = "clip-interrogator";
+  version = "0.6.0";
   pyproject = true;
-
-  COMFYUI_FRONTEND_VERSION = version;
 
   src = fetchPypi {
     inherit pname version;
-    sha256 = "sha256-kmZGG4IgQKpoy72oaeJ8zJdLcdqzqPOTv2y/FXyoSW8=";
+    sha256 = "sha256-55Qjcv6blhgYgfcIPjF53nRuWbDjxBmfs+Phm+9CFpM=";
   };
 
   nativeBuildInputs = with python.pkgs; [
@@ -20,5 +18,14 @@ python.pkgs.buildPythonPackage rec {
   ];
 
   propagatedBuildInputs = with python.pkgs; [
+    torch
+    torchvision
+    pillow
+    requests
+    safetensors
+    tqdm
+    open-clip-torch
+    accelerate
+    transformers
   ];
 }
