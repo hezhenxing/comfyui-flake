@@ -1,24 +1,22 @@
 {
   python,
-  fetchFromGitHub,
   buildPythonPackage,
+  fetchFromGitHub,
   ...
 }:
 buildPythonPackage rec {
-  pname = "comfyui-kjnodes";
-  version = "1.1.8";
+  pname = "comfyui-frame-interpolation";
+  version = "1.0.7";
   pyproject = true;
 
   src = fetchFromGitHub {
-    owner = "kijai";
-    repo = "ComfyUI-KJNodes";
-    rev = "6c996e1877db08c7de020ee14421dd28d7574ec2";
-    hash = "sha256-dh7c7Qu5YW7t3NNvP1KTC+qbDkv6rg6IuCNwNqBZGK0=";
+    owner = "Fannovel16";
+    repo = "ComfyUI-Frame-Interpolation";
+    rev = "a969c01dbccd9e5510641be04eb51fe93f6bfc3d";
+    hash = "sha256-bBtGs/LyQf7teCD7YT4dypYQTuy3ja+zV1hbQkYcGuU=";
   };
 
-  passthru.comfyui = {
-    extension = true;
-  };
+  passthru.comfyui.extension = true;
 
   postPatch = ''
     cat <<EOF >> pyproject.toml
@@ -27,6 +25,7 @@ buildPythonPackage rec {
     build-backend = "hatchling.build"
 
     [tool.hatch.build]
+    ignore-vcs = true
     include = ["*"]
     exclude = [".*"]
 
@@ -40,14 +39,15 @@ buildPythonPackage rec {
   ];
 
   dependencies = with python.pkgs; [
-    pillow
-    scipy
-    color-matcher
-    matplotlib
-    huggingface-hub
-    mss
+    torch
+    numpy
+    einops
     opencv-python
-    torchlibrosa
-    sageattention
+    kornia
+    scipy
+    pillow
+    torchvision
+    tqdm
+    cupy
   ];
 }

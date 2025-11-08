@@ -1,24 +1,22 @@
 {
   python,
-  fetchFromGitHub,
   buildPythonPackage,
+  fetchFromGitHub,
   ...
 }:
 buildPythonPackage rec {
-  pname = "comfyui-kjnodes";
-  version = "1.1.8";
+  pname = "comfyui-chatterbox";
+  version = "1.2.1";
   pyproject = true;
 
   src = fetchFromGitHub {
-    owner = "kijai";
-    repo = "ComfyUI-KJNodes";
-    rev = "6c996e1877db08c7de020ee14421dd28d7574ec2";
-    hash = "sha256-dh7c7Qu5YW7t3NNvP1KTC+qbDkv6rg6IuCNwNqBZGK0=";
+    owner = "wildminder";
+    repo = "ComfyUI-ChatterBox";
+    rev = "f0300cf84ee1b8fc9cbd38cb68cb3bace1895063";
+    hash = "sha256-cAevPoz1Ru1Yv+U5FnPYfNHFWiOHXMHzaVxBZz0FPJg=";
   };
 
-  passthru.comfyui = {
-    extension = true;
-  };
+  passthru.comfyui.extension = true;
 
   postPatch = ''
     cat <<EOF >> pyproject.toml
@@ -27,6 +25,7 @@ buildPythonPackage rec {
     build-backend = "hatchling.build"
 
     [tool.hatch.build]
+    ignore-vcs = true
     include = ["*"]
     exclude = [".*"]
 
@@ -35,19 +34,28 @@ buildPythonPackage rec {
     EOF
   '';
 
+  pytestCheckPhase = ''
+    # skip check
+  '';
+
   nativeBuildInputs = with python.pkgs; [
     hatchling
   ];
 
   dependencies = with python.pkgs; [
-    pillow
-    scipy
-    color-matcher
-    matplotlib
+    torch
+    torchaudio
+    librosa
+    numpy
     huggingface-hub
-    mss
-    opencv-python
-    torchlibrosa
-    sageattention
+    einops
+    scipy
+    tokenizers
+    soundfile
+    s3tokenizer
+    conformer
+    safetensors
+    transformers
+    diffusers
   ];
 }

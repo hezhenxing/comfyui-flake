@@ -87,6 +87,7 @@
               comfyui-frontend-package
               comfyui-workflow-templates
               comfyui-embedded-docs
+              comfy-cli
 
               torch
               torchsde

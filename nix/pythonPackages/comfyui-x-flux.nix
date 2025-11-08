@@ -1,32 +1,32 @@
 {
   python,
-  fetchFromGitHub,
   buildPythonPackage,
+  fetchFromGitHub,
   ...
 }:
 buildPythonPackage rec {
-  pname = "comfyui-kjnodes";
-  version = "1.1.8";
+  pname = "comfyui-x-flux";
+  version = "1.0.0";
   pyproject = true;
 
   src = fetchFromGitHub {
-    owner = "kijai";
-    repo = "ComfyUI-KJNodes";
-    rev = "6c996e1877db08c7de020ee14421dd28d7574ec2";
-    hash = "sha256-dh7c7Qu5YW7t3NNvP1KTC+qbDkv6rg6IuCNwNqBZGK0=";
+    owner = "XLabs-AI";
+    repo = "x-flux-comfyui";
+    rev = "00328556efc9472410d903639dc9e68a8471f7ac";
+    hash = "sha256-9487Ijtwz0VZGOHknMTbrJgZHsNjDHJnLK9NtohpO0A=";
   };
 
-  passthru.comfyui = {
-    extension = true;
-  };
+  passthru.comfyui.extension = true;
 
   postPatch = ''
+    sed -i 's/einops==0.8.0/einops/' requirements.txt pyproject.toml
     cat <<EOF >> pyproject.toml
     [build-system]
     requires = ["hatchling"]
     build-backend = "hatchling.build"
 
     [tool.hatch.build]
+    ignore-vcs = true
     include = ["*"]
     exclude = [".*"]
 
@@ -40,14 +40,11 @@ buildPythonPackage rec {
   ];
 
   dependencies = with python.pkgs; [
-    pillow
-    scipy
-    color-matcher
-    matplotlib
-    huggingface-hub
-    mss
+    gitpython
+    einops
+    transformers
+    diffusers
+    sentencepiece
     opencv-python
-    torchlibrosa
-    sageattention
   ];
 }

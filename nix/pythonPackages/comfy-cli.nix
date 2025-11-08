@@ -13,6 +13,10 @@ python.pkgs.buildPythonPackage rec {
     sha256 = "sha256-F/P6z7HCxJEs9e/zUsQJO76oVxyBc7zlEoMAiwbb6ag=";
   };
 
+  postPatch = ''
+    sed -i 's/click<=8.1.8/click/' pyproject.toml
+  '';
+
   nativeBuildInputs = with python.pkgs; [
     setuptools
   ];
