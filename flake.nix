@@ -61,72 +61,17 @@
         with pkgs;
         let
           workspace = "/home/hezx/work/comfyui-flake";
-          install = writeShellScriptBin "install" ''
-            cd ${workspace}
-            if [[ -d ComfyUI ]]; then
-              echo "ComfyUI directory already exists. Skipping clone."
-            else
-              git clone https://github.com/Comfy-Org/ComfyUI.git ComfyUI
-              git clone https://github.com/Comfy-Org/ComfyUI-Manager.git ComfyUI/custom_nodes/ComfyUI-Manager
-            fi
-          '';
           run = writeShellScriptBin "run" ''
             cd ${workspace}
-            cd ComfyUI
-            python main.py
+            comfyui-launcher
           '';
         in
         [
-          install
           run
-          pkg-config
+          comfyui-launcher
           (pkgs.python3.withPackages (
             p: with p; [
-              pip
-              uv
-              comfyui-frontend-package
-              comfyui-workflow-templates
-              comfyui-embedded-docs
               comfy-cli
-
-              torch
-              torchsde
-              torchvision
-              torchaudio
-              numpy
-              einops
-              transformers
-              tokenizers
-              sentencepiece
-              safetensors
-              aiohttp
-              yarl
-              pyyaml
-              pillow
-              scipy
-              tqdm
-              psutil
-              alembic
-              sqlalchemy
-              av
-
-              #non essential dependencies:
-              kornia
-              spandrel
-              pydantic
-              pydantic-settings
-
-              # ComfyUI-Manager dependencies
-              gitpython
-              pygithub
-              matrix-nio
-              transformers
-              huggingface-hub
-              typer
-              rich
-              typing-extensions
-              toml
-              chardet
             ]
           ))
         ];
