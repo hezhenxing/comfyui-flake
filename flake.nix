@@ -63,11 +63,16 @@
           workspace = "/home/hezx/work/comfyui-flake";
           run = writeShellScriptBin "run" ''
             cd ${workspace}
-            comfyui-launcher
+            nix run .#comfyui-launcher
+          '';
+          build = writeShellScriptBin "build" ''
+            cd ${workspace}
+            nix build .#comfyui-launcher
           '';
         in
         [
           run
+          build
           comfyui-launcher
           (pkgs.python3.withPackages (
             p: with p; [
